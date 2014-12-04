@@ -11,7 +11,7 @@
 ;; Alt+U S - re[S]tart user plugins
 ;; 
 
-(defn restart [context] 
+(defn restart []
   (try
     (p/start-user-plugins)
     (e/info-dialog "User plugins"
@@ -22,7 +22,7 @@
         (.getMessage e))))))
 
 (defcommand start-user-plugins "Start/restart user plugins" "Alt+U S"
-  [context] (restart context))
+  [] (restart))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -38,7 +38,7 @@
       (and (e/project-exists s) (format "A project with name '%s' already exists" s))
       (e/validate-project-location proj-location))))
 
-(defn create-user-plugin [context]
+(defn create-user-plugin []
   (let [project-name @(e/input-dialog 
                         "New User Plugin" 
                         "Enter the name for your Plugin:" 
@@ -64,14 +64,14 @@
       (-> f e/open-workspace-file (e/goto-editor-line -1)))))
 
 (defcommand create-user-plugin-cmd "New User plugin" "Alt+U N"
-  [context] (create-user-plugin context))
+  [] (create-user-plugin))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Alt+U I - Import all user plugins as projects in workspace
 ;; 
 
-(defn create-update-projects [context]
+(defn create-update-projects []
   (doseq [p (p/user-plugins (p/plugins-root-dir))]
     (if-let [msg (validate-project-name (.getName p) p)]
       (e/error-dialog 
@@ -85,4 +85,4 @@
 
 (defcommand create-user-plugins-projects
   "Import user plugins as projects in Workspace" "Alt+U I"
-  [context] (create-update-projects context))
+  [] (create-update-projects))
