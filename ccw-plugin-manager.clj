@@ -21,9 +21,8 @@
         "An error occured while starting User plugins: \n"
         (.getMessage e))))))
 
-(defcommand start-user-plugins "Start/restart user plugins")
-(defhandler start-user-plugins restart)
-(defkeybinding start-user-plugins "Alt+U S")
+(defcommand start-user-plugins "Start/restart user plugins" "Alt+U S"
+  [context] (restart context))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -64,9 +63,8 @@
                       (e/project-members project-name))]
       (-> f e/open-workspace-file (e/goto-editor-line -1)))))
 
-(defcommand create-user-plugin-cmd "New User plugin")
-(defhandler create-user-plugin-cmd create-user-plugin)
-(defkeybinding create-user-plugin-cmd "Alt+U N")
+(defcommand create-user-plugin-cmd "New User plugin" "Alt+U N"
+  [context] (create-user-plugin context))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,6 +83,6 @@
         (e/project-open (.getName p))
         (ccw.repl.Actions/connectToEclipseNREPL)))))
 
-(defcommand create-user-plugins-projects "Import user plugins as projects in Workspace")
-(defhandler create-user-plugins-projects create-update-projects)
-(defkeybinding create-user-plugins-projects "Alt+U I")
+(defcommand create-user-plugins-projects
+  "Import user plugins as projects in Workspace" "Alt+U I"
+  [context] (create-update-projects context))
