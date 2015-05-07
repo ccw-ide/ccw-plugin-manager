@@ -13,7 +13,8 @@
 
 (defn restart []
   (try
-    (p/start-user-plugins)
+    (let [r (p/start-user-plugins)]
+      (try (deref r) (catch Exception _)))
     (e/info-dialog "User plugins"
      "User plugins have been restarted successfully!")
     (catch Exception e
@@ -22,7 +23,9 @@
         (.getMessage e))))))
 
 (defcommand start-user-plugins "Start/restart user plugins" "Alt+U S"
-  [] (restart))
+  []
+  ; call restart in a future so we do not block the UI thread
+  (future (restart)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

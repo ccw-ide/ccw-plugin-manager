@@ -1,0 +1,1 @@
+- restarting User Plugins now happens in the background to not freeze or totally deadlock the UI Thread
