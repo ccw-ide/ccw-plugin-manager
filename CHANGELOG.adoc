@@ -1,1 +1,2 @@
 - restarting User Plugins now happens in the background to not freeze or totally deadlock the UI Thread
+- duplicate plugins (identity based on directory name) are reported in traces and in the success popup

@@ -1,5 +1,6 @@
 (ns ccw-plugin-manager
   (:require [clojure.java.io       :as io]  
+            [clojure.string        :as s]
             [ccw.e4.dsl            :refer :all]
             [ccw.e4.model          :as m]
             [ccw.eclipse           :as e]
@@ -12,15 +13,17 @@
 ;; 
 
 (defn restart []
-  (try
-    (let [r (p/start-user-plugins)]
-      (try (deref r) (catch Exception _)))
-    (e/info-dialog "User plugins"
-     "User plugins have been restarted successfully!")
-    (catch Exception e
-      (e/error-dialog "User plugins" (str
-        "An error occured while starting User plugins: \n"
-        (.getMessage e))))))
+  (let [r (p/start-user-plugins)]
+    (try
+      (let [skipped-plugins (deref r)]
+        (e/info-dialog "User plugins"
+          (str "User plugins have been restarted successfully!"
+            (when (seq skipped-plugins)
+              (str "\n\n"
+                (s/join "\n\n" (map p/skipped-plugin-message skipped-plugins)))))))
+      (catch Exception e
+        (e/error-dialog "User plugins" (str "An error occured while starting User plugins: \n"
+            (.getMessage e)))))))
 
 (defcommand start-user-plugins "Start/restart user plugins" "Alt+U S"
   []
