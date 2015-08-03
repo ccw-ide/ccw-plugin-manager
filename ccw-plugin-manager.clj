@@ -45,7 +45,7 @@
       (e/validate-project-location proj-location))))
 
 (defn create-user-plugin []
-  (let [project-name @(e/input-dialog 
+  (let [project-name (e/input-dialog 
                         "New User Plugin" 
                         "Enter the name for your Plugin:" 
                         "plugin-name" 
